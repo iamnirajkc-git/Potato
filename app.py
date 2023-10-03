@@ -31,7 +31,18 @@ def trainRoute():
     return "Training done successfully!"
 
 
+    """
+@app.route("/predict", methods=['POST'])
+@cross_origin()
+def predictRoute():
+    image = request.json['image']
+    decodeImage(image, clApp.filename)
+    result = clApp.classifier.predict()
+    return jsonify(result)
 
+
+    
+    """
 @app.route("/predict", methods=['POST'])
 @cross_origin()
 def predictRoute():
@@ -43,6 +54,6 @@ def predictRoute():
 
 if __name__ == "__main__":
     clApp = ClientApp()
-    app.run(host='0.0.0.0', port=8080) #local host
+    #app.run(host='0.0.0.0', port=8080) #local host
     # app.run(host='0.0.0.0', port=8080) #for AWS
-    #app.run(host='0.0.0.0', port=80) #for AZURE
+    app.run(host='0.0.0.0', port=80) #for AZURE

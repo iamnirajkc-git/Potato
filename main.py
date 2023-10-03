@@ -1,3 +1,4 @@
+'''
 from cnnClassifier import logger
 from cnnClassifier.pipeline.stage_01_data_ingestion import DataIngestionTrainingPipeline
 from cnnClassifier.pipeline.stage_02_prepare_base_model import PrepareBaseModelTrainingPipeline
@@ -48,4 +49,15 @@ try:
         logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
 except Exception as e:
         logger.exception(e)
-        raise e    
+        raise e 
+
+'''
+
+from tensorflow.keras.models import load_model
+
+# Load your custom model
+custom_model = load_model('C:\Users\nikc\Potato\artifacts\training\model.h5')
+
+# Use your custom model for predictions or other tasks
+# For example:
+# result = custom_model.predict(image)
