@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - diseaseapp
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://diseaseapp.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_4e3f0743d0ae4adfbc87583a6a5c3790 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_a1d34d7a00e247b3bc99583be5931161 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: diseaseapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4e3f0743d0ae4adfbc87583a6a5c3790 }}/disease:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'diseaseapp'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0e81bf23a5104d0bb0c21131fadc6574 }}
+        images: 'diseaseapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_4e3f0743d0ae4adfbc87583a6a5c3790 }}/disease:${{ github.sha }}'
