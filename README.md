@@ -142,11 +142,11 @@ s3cEZKH5yytiVnJ3h+eI3qhhzf9q1vNwEi6+q+WGdd+ACRCZ7JD6
 
 ## Run from terminal:
 
-docker build -t disease.azurecr.io/disease:latest .
+docker build -t potato1.azurecr.io/disease:latest .
 
-docker login disease.azurecr.io
+docker login potato1.azurecr.io
 
-docker push disease.azurecr.io/disease:latest
+docker push potato1.azurecr.io/disease:latest
 
 
 ## Deployment Steps:
