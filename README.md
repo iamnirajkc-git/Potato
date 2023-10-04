@@ -142,11 +142,11 @@ s3cEZKH5yytiVnJ3h+eI3qhhzf9q1vNwEi6+q+WGdd+ACRCZ7JD6
 
 ## Run from terminal:
 
-docker build -t chickenapp.azurecr.io/chicken:latest .
+docker build -t disease.azurecr.io/disease:latest .
 
-docker login chickenapp.azurecr.io
+docker login disease.azurecr.io
 
-docker push chickenapp.azurecr.io/chicken:latest
+docker push disease.azurecr.io/disease:latest
 
 
 ## Deployment Steps:
