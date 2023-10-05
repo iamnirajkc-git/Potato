@@ -1,3 +1,5 @@
+<!--
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,6 +120,8 @@
 
 
 
+<!--
+
 
 							<input type="hidden" class="form-control mr-2" id="url" placeholder="Enter REST Api url..." value="../predict"/>
 							<input name="upload" type="file" id="fileinput" style="position:absolute;top:-500px;"/><br/>
@@ -231,4 +235,144 @@ $(document).ready(function(){
 
 </script>
 </body>
+</html> 	
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Disease Prediction</title>
+    <!-- Include your CSS and JavaScript libraries here -->
+    <style>
+        /* Your CSS styles here */
+        /* Style for the "Choose file" button */
+        .btn-choose-file {
+            border: 2px solid #007bff; /* Blue border color */
+            color: #007bff; /* Blue text color */
+        }
+        
+        /* Style for the "Predict Disease" button */
+        .btn-predict {
+            border: 2px solid #007bff; /* Blue border color */
+            color: #007bff; /* Blue text color */
+        }
+
+        /* Style for the container of the uploaded image on mobile */
+        .img-container {
+            max-width: 100%;
+            max-height: 80vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="main container">
+        <section class="iupload">
+            <h3 class="text-center py-4">Disease Prediction</h3>
+            <div class="row">
+                <div class="img-part col-md-6">
+                    <div class="image-part">
+                        <video autoplay id="video" poster="https://img.freepik.com/free-vector/group-young-people-posing-photo_52683-18824.jpg?size=338&ext=jpg"></video>
+                        <img src="" id="photo" class="img-container"> <!-- Added class for controlling image size -->
+                        <canvas style="display:none;" id="canvas"></canvas>
+                    </div>
+                    <div class="btn-part">
+                        <form id="upload-data pt-3" class="">
+                            <div class="input-group mt-3 row">
+                                <!-- Modify this button to trigger file input -->
+                                <label for="fileinput" class="btn btn-primary btn-lg btn-choose-file mr-3">Choose file</label>
+                                <input type="file" id="fileinput" style="display:none;" class="col-md-5 col-xs-5">
+                                
+                                <!-- Modify this button to trigger prediction -->
+                                <button id="predict" type="button" class="btn btn-success btn-lg btn-predict col-md-5 col-xs-5">Predict Disease</button>
+                            </div>
+                            
+                            <!-- ... Rest of the form ... -->
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 right-part">
+                    <h5 class="mb-2"> Prediction Results </h5>
+                    <div class="row">
+                        <div class="res-part2 col-md-5 col-xs-12"></div>
+                        <div class="res-part col-md-5 col-xs-12">
+                            <!-- Display prediction result here -->
+                            <div class="jsonRes" id="prediction-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        // JavaScript code for handling image upload and prediction
+
+        var base_data = "";
+
+        // Function to send a prediction request
+        function sendPredictionRequest(imageBase64) {
+            // Replace this URL with your prediction endpoint
+            var predictionUrl = "/predict";
+
+            $.ajax({
+                url: predictionUrl,
+                type: "POST",
+                data: JSON.stringify({ image: imageBase64 }),
+                contentType: "application/json",
+                success: function (response) {
+                    // Display the prediction result
+                    $("#prediction-result").html("<pre>" + JSON.stringify(response, null, 2) + "</pre>");
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                },
+            });
+        }
+
+        $(document).ready(function () {
+            // Add an event listener to the file input
+            $("#fileinput").change(function () {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var url = e.target.result;
+                        var img = new Image();
+                        img.crossOrigin = 'Anonymous';
+                        img.onload = function () {
+                            var canvas = document.createElement('CANVAS');
+                            var ctx = canvas.getContext('2d');
+                            canvas.height = this.height;
+                            canvas.width = this.width;
+                            ctx.drawImage(this, 0, 0);
+                            base_data = canvas.toDataURL('image/jpeg', 1.0).replace(/^data:image.+;base64,/, '');
+                            canvas = null;
+                        };
+                        img.src = url;
+                        $('#photo').attr('src', url);
+                        $('#photo').show();
+                        $('#video').hide();
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Add an event listener to the "Predict Disease" button
+            $("#predict").click(function (evt) {
+                sendPredictionRequest(base_data);
+            });
+        });
+    </script>
+</body>
 </html>
+
+
+
+
+
+
+
+
