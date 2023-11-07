@@ -1,3 +1,5 @@
+# used to create a set of files and directories with specific names 
+
 import os
 from pathlib import Path
 import logging

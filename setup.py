@@ -1,3 +1,7 @@
+# The setup.py file is primarily used for packaging and distributing Python packages through tools like pip or for defining dependencies and metadata 
+# when you're distributing your code as a reusable Python package.
+#For this project bwe may not need this file.
+
 import setuptools
 
 with open("README.md", "r", encoding="utf-8") as f:
