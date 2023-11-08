@@ -22,15 +22,15 @@ jobs:
     - name: Log in to registry
       uses: docker/login-action@v2
       with:
-        registry: https://potato1.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_ec2b55c17eec4d8c911af4cb198a11fd }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_a3ecab04e64243c2b95178ae2a8f90ff }}
+        registry: https://potatoapp.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_ceedec3e921645cd996f15a52a1c0769 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_090dba1ffb2d401a8af324432ccdcc59 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: potato1.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ec2b55c17eec4d8c911af4cb198a11fd }}/disease:${{ github.sha }}
+        tags: potatoapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ceedec3e921645cd996f15a52a1c0769 }}/chicken:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'potatoapp1'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9c9978a1b3694b9d95e317eff437c797 }}
-        images: 'potato1.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ec2b55c17eec4d8c911af4cb198a11fd }}/disease:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_bae8ee25fea14145be19d3a3dbd60c83 }}
+        images: 'potatoapp.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ceedec3e921645cd996f15a52a1c0769 }}/chicken:${{ github.sha }}'
